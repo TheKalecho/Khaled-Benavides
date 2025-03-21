@@ -4,10 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mensajes Especiales</title>
-    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://unpkg.com/framer-motion@10.12.16/dist/framer-motion.umd.min.js"></script>
     <style>
         body {
             background: linear-gradient(to bottom, #fff7cd, #ffccd5);
@@ -16,6 +12,7 @@
             align-items: center;
             height: 100vh;
             font-family: Arial, sans-serif;
+            flex-direction: column;
         }
         .card {
             background: white;
@@ -24,6 +21,8 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             text-align: center;
             max-width: 350px;
+            font-size: 18px;
+            font-weight: bold;
         }
         .button {
             margin-top: 20px;
@@ -33,58 +32,48 @@
             border: none;
             border-radius: 20px;
             cursor: pointer;
+            font-size: 16px;
+        }
+        .button:disabled {
+            background: gray;
+            cursor: default;
         }
     </style>
 </head>
 <body>
 
-<div id="root"></div>
+<div class="card" id="messageBox">
+    <p id="messageText">Hoy quiero hacer algo especial para ti. 🍫</p>
+</div>
+<button class="button" id="nextButton">Presiona para descubrir</button>
 
-<script type="text/babel">
-    const { useState } = React;
-    const { motion } = window['framer-motion'];
-
+<script>
     const messages = [
-        { text: "Hoy quiero hacer algo especial para ti. 🍫" },
-        { text: "Cada momento a tu lado es único. 🌻" },
-        { text: "Me gusta cómo iluminas mi vida con tu risa. 🐬" },
-        { text: "Este es un regalo de los muchos que te mereces. 🦋" },
-        { text: "Porque eres increíble, y cada día a tu lado me lo recuerda. ✨" },
-        { text: "No hay palabras suficientes para decirte cuánto te quiero. ❤️" },
-        { text: "Gracias por todo, mi amor. Te quiero mucho 🤎" }
+        "Hoy quiero hacer algo especial para ti. 🍫",
+        "Cada momento a tu lado es único. 🌻",
+        "Me gusta cómo iluminas mi vida con tu risa. 🐬",
+        "Este es un regalo de los muchos que te mereces. 🦋",
+        "Porque eres increíble, y cada día a tu lado me lo recuerda. ✨",
+        "No hay palabras suficientes para decirte cuánto te quiero. ❤️",
+        "Gracias por todo, mi amor. Te quiero mucho 🤎"
     ];
 
-    function SpecialMessages() {
-        const [index, setIndex] = useState(0);
+    let index = 0;
+    const messageText = document.getElementById("messageText");
+    const nextButton = document.getElementById("nextButton");
 
-        const handleNextMessage = () => {
-            if (index < messages.length - 1) {
-                setIndex(index + 1);
-            }
-        };
-
-        return (
-            <div>
-                <motion.div
-                    key={index}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.6 }}
-                    className="card"
-                >
-                    <p>{messages[index].text}</p>
-                </motion.div>
-                {index < messages.length - 1 && (
-                    <button className="button" onClick={handleNextMessage}>
-                        Presiona para descubrir
-                    </button>
-                )}
-            </div>
-        );
-    }
-
-    ReactDOM.createRoot(document.getElementById("root")).render(<SpecialMessages />);
+    nextButton.addEventListener("click", function () {
+        index++;
+        if (index < messages.length) {
+            messageText.textContent = messages[index];
+        }
+        if (index === messages.length - 1) {
+            nextButton.disabled = true;
+            nextButton.textContent = "Fin del mensaje 💖";
+        }
+    });
 </script>
 
 </body>
 </html>
+
